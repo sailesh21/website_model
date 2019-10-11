@@ -15,27 +15,30 @@ $db="iuhealth";
 if(isset($_POST['userid']))
 {
     $uid=$_POST['userid'];
-    $pwd=$_POST['pwd'];
+    $otp=$_POST['otp'];
     
-	$sql="select * from student_credentials where user_id='".$uid."'AND pwd='".$pwd."' limit 1";
-	#$sql1= "select * from student_personal where user_id='".$uid."' limit 1";
+    $sql="select * from otp_details where user_id='".$uid."'AND otp='".$otp."' limit 1";
+    $sql1= "select * from student_credentials where user_id='".$uid."' limit 1";
 	$result=mysqli_query($conn, $sql);
-	#$result1=mysqli_query($conn, $sql1);
-    
-    
-    $result=mysqli_query($conn, $sql);
+	$result1=mysqli_query($conn, $sql1);
     
 	if(mysqli_num_rows($result)==1)
 	{
-		
-		header("Location: student_home.php");
+		if(mysqli_num_rows($result1)==1)
+		{
+			header("Location: mentorlabinfo.php");
+		}
+		else
+		{
+			header("Location: signup.php");
+		}
 		
     }
 	else
 	{
 		echo '<script type="text/javascript"> ';
 
-		echo 'alert("Username or Password is incorrect")';
+		echo 'alert("All the Names must be filled out")';
 		
 		echo "</script>";
     
@@ -69,7 +72,7 @@ if(isset($_POST['userid']))
 			<h1>Login</h1><br/>
 			<form method="post" action="#">
 				<p><input type="tel" pattern="[0-9]{6}" name="userid" value="" placeholder="Userid" required></p>
-				<p><input type="password" name="pwd" value="" placeholder="Enter  Password" required ></p>
+				<p><input type="password" name="otp" value="" placeholder="Enter One time Password" required ></p>
 				<p class="remember_me">
 					<label>
 						<label>
@@ -79,7 +82,7 @@ if(isset($_POST['userid']))
 					</label>
 				</p>
 				<p class="submit"><input type="submit" name="commit" value="Login"></p>
-				<a class="signup" href="initial_signup.php">Not Registered yet?</a>
+				<a class="signup" href="gen_otp.php">Don't have otp?</a>
 			</form>
 		</div>  
  
