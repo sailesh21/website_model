@@ -1,5 +1,7 @@
 <?php
 		
+include ('connection.php');
+#connect_db();
 $servername="mysql-iuhealth.indianaphysiology.org";
 $username="user2019";
 $password="password01";
@@ -11,14 +13,17 @@ $db="iuhealth";
 		if ($conn->connect_error) {
 			die("Connection failed: " . $conn->connect_error);
 		}
-		
+session_start();
+				
 if(isset($_POST['userid']))
 {
+	session_start();
+	// Store Session Data
     $uid=$_POST['userid'];
     $pwd=$_POST['pwd'];
-    
+	$_SESSION['login_user']= $uid;
+
 	$sql="select * from student_credentials where user_id='".$uid."'AND pwd='".$pwd."' limit 1";
-	#$sql1= "select * from student_personal where user_id='".$uid."' limit 1";
 	$result=mysqli_query($conn, $sql);
 	#$result1=mysqli_query($conn, $sql1);
     
@@ -27,8 +32,13 @@ if(isset($_POST['userid']))
     
 	if(mysqli_num_rows($result)==1)
 	{
+		if($uid==300001){
+			header("Location: student_coordinator.php");
+		}
+		else{
+			header("Location: student_home.php");
+		}
 		
-		header("Location: student_home.php");
 		
     }
 	else
@@ -51,6 +61,7 @@ if(isset($_POST['userid']))
     <meta charset="UTF-8">
 	<title>Project STEM</title>
 	<link rel="icon" type="image/jpg" href="attachments/icon.jpg" />
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link rel="stylesheet" type="" href="loginstyle.css">
 </head>
 	
@@ -82,7 +93,7 @@ if(isset($_POST['userid']))
 				<a class="signup" href="initial_signup.php">Not Registered yet?</a>
 			</form>
 		</div>  
- 
+	
 		<!--<div class="login-help">
             <p>Forgot your password? <a href="signup.php">Click here to reset it</a>.</p>
 		</div>-->

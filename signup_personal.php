@@ -64,43 +64,62 @@
 
 <?php
 		
-$servername="localhost";
-$username="id11103248_user2019";
+$servername="mysql-iuhealth.indianaphysiology.org";
+$username="user2019";
 $password="password01";
-$db="id11103248_iuhealth";
-		
-		// Create connection
+$db="iuhealth";
+      
+      // Create connection
 		$conn = mysqli_connect($servername, $username, $password, $db);
 		// Check connection
 		if ($conn->connect_error) {
 			die("Connection failed: " . $conn->connect_error);
 		}
-		
-if(isset($_POST['fname']))
+session_start();
+$usid=$_SESSION['login_user'];
+#$sql="select * from student_credentials where user_id='".$uid."'AND pwd='".$pwd."' limit 1";
+
+$sql1= "SELECT user_id FROM student_personal WHERE user_id='" .$usid. "' limit 1";
+$result1 = mysqli_query($conn, $sql1);
+$result = mysqli_query($conn, $sql);
+if(mysqli_num_rows($result1)==1)
 {
-    $fname=$_POST['fname'];
-    $mname=$_POST['mname'];
-    $lname=$_POST['lname'];
-    $pnum=$_POST['pnum'];
-    $faname=$_POST['faname'];
-    $faemail=$_POST['faemail'];
-    $famnum=$_POST['famnum'];
-    $moname=$_POST['moname'];
-    $moemail=$_POST['moemail'];
-    $momnum=$_POST['momnum'];
-     
-    $sql="INSERT INTO `student_personal` (`fname`, `mname`, `lname`, `pnum`, `faname`, `faemail`, `famnum`, `moname`, `moemail`, `momnum`) VALUES ('".$fname."', '".$mname."', '".$lname."', '".$pnum."', '".$faname."', '".$faemail."', '".$famnum."', '".$moname."', '".$moemail."', '".$momnum."')";
-    
-    $result = mysqli_query($conn, $sql);
-    
-	if($result)
-	{
-		echo "Your data has been Succesfully entered into database";
-      exit();
-    }
-        
+   echo " Hi $usid Your Data has been already in the database";
+   header("Location: student_display.php");
 }
-?> 
+else 
+{
+   if(mysqli_num_rows($result)==0)
+   {
+      if(isset($_POST['fname']))
+      {
+          $fname=$_POST['fname'];
+          $mname=$_POST['mname'];
+          $lname=$_POST['lname'];
+          $pnum=$_POST['pnum'];
+          $faname=$_POST['faname'];
+          $faemail=$_POST['faemail'];
+          $famnum=$_POST['famnum'];
+          $moname=$_POST['moname'];
+          $moemail=$_POST['moemail'];
+          $momnum=$_POST['momnum'];
+      
+          #$sql = "SELECT `pname`, `lname`, `ymail`, `pwd` FROM `student_credentials` where pname<>'elmer'"
+          
+          #if 
+          $sql="INSERT INTO `student_personal` (`fname`, `mname`, `lname`, `pnum`, `faname`, `faemail`, `famnum`, `moname`, `moemail`, `momnum`) VALUES ('".$fname."', '".$mname."', '".$lname."', '".$pnum."', '".$faname."', '".$faemail."', '".$famnum."', '".$moname."', '".$moemail."', '".$momnum."')";
+          
+          $result = mysqli_query($conn, $sql);
+          
+         if($result)
+         {
+            echo "Your data has been Succesfully entered into database";
+            exit();
+          }
+              
+      }
+   }
+   
+}
 
-
-
+?>

@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="" href="loginstyle.css">
    </head>
    <body>
-       <p>This page collects information about your lab.  Be sure to gather the information first from your lab mentor or your daily supervisor and others in your lab.</p>
+       <p font color='white'>This page collects information about your lab.  Be sure to gather the information first from your lab mentor or your daily supervisor and others in your lab.</p>
         <div class="container">
           <div class="login">
             <h1>Mentor Details</h1><br/>
